@@ -3,7 +3,10 @@ const router = express.Router();
 const Order = require('../models/order');
 const verifyToken = require('../middleware/verify-token');
 
-router.post('/orders', verifyToken, async (req, res) => {
+
+router.use(verifyToken);
+
+router.post('/orders', async (req, res) => {
     try {
         const { from, to, price } = req.body;
         const order = new Order({
@@ -19,7 +22,7 @@ router.post('/orders', verifyToken, async (req, res) => {
     }
 });
 
-router.patch('/orders/:orderId/location', verifyToken, async (req, res) => {
+router.patch('/orders/:orderId/location', async (req, res) => {
     try {
         const { orderId } = req.params;
         const { lat, lng } = req.body;
@@ -35,8 +38,7 @@ router.patch('/orders/:orderId/location', verifyToken, async (req, res) => {
     }
 });
 
-
-router.get('/orders/:orderId/status', verifyToken, async (req, res) => {
+router.get('/orders/:orderId/status', async (req, res) => {
     try {
         const { orderId } = req.params;
         const order = await Order.findById(orderId);
