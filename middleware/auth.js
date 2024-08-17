@@ -1,8 +1,8 @@
-function auth(allowedRoles) {
+function auth(roles) {
   return (req, res, next) => {
       const { role } = req.user;
 
-      if (allowedRoles.includes(role)) {
+      if (roles.includes(role)) {
           next();
       } else {
           res.status(403).json({ error: 'no access' });
